@@ -13,13 +13,13 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="hero-gradient relative min-h-[85vh] flex flex-col pt-4 overflow-hidden">
+        <section className="hero-gradient relative min-h-[85vh] flex flex-col pt-0 overflow-hidden">
           {/* Header/Nav inside Hero for that seamless look */}
           <Navbar />
 
           <div className="container mx-auto px-4 md:px-12 flex-grow flex flex-col md:flex-row items-center justify-center gap-12 pt-8 pb-16 relative z-10">
-            {/* Left side vertical text */}
-            <div className="hidden xl:block absolute left-8 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+            {/* Left side vertical text - adjusted top position */}
+            <div className="hidden xl:block absolute left-8 top-20 bottom-20 opacity-10 pointer-events-none flex items-center">
               <h1 className="text-8xl font-black vertical-text tracking-[0.2em] text-white">STAR PLUS</h1>
             </div>
 
