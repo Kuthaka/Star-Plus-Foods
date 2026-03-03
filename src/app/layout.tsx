@@ -8,8 +8,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Soul Tari | Your Favorite Foods Ready in Minutes",
-  description: "Recipes From the Master Chefs of Nameless Streets of India",
+  title: "Star Plus Foods | Your Favorite Foods Ready in Minutes",
+  description: "Star Plus Foods: Recipes From the Master Chefs of Nameless Streets of India",
 };
 
 export default function RootLayout({

@@ -20,7 +20,7 @@ export default function Home() {
             <div className="w-16 md:w-24 relative h-16 md:h-24">
               <Image
                 src="/star/logo-bg.png"
-                alt="Soul Tari Logo"
+                alt="Star Plus Foods Logo"
                 fill
                 className="object-contain"
               />
@@ -46,7 +46,7 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-12 flex-grow flex flex-col md:flex-row items-center justify-center gap-12 pt-8 pb-16 relative z-10">
             {/* Left side vertical text */}
             <div className="hidden xl:block absolute left-8 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
-              <h1 className="text-8xl font-black vertical-text tracking-[0.2em] text-white">SOULTARI</h1>
+              <h1 className="text-8xl font-black vertical-text tracking-[0.2em] text-white">STAR PLUS</h1>
             </div>
 
             {/* Product Image */}
