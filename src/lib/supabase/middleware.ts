@@ -38,16 +38,17 @@ export const updateSession = async (request: NextRequest) => {
     const { data: { user } } = await supabase.auth.getUser();
 
     // Protection Logic
-    const isLoginPage = request.nextUrl.pathname === "/admin/login";
+    const publicAdminPaths = ["/admin/login", "/admin/forgot-password", "/admin/reset-password"];
+    const isPublicAdminPath = publicAdminPaths.includes(request.nextUrl.pathname);
     const isAdminPath = request.nextUrl.pathname.startsWith("/admin");
 
-    if (isAdminPath && !isLoginPage && !user) {
+    if (isAdminPath && !isPublicAdminPath && !user) {
         // If trying to access admin dashboard and not logged in, redirect to login
         return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
-    if (isLoginPage && user) {
-        // If already logged in and trying to access login page, redirect to dashboard
+    if (isPublicAdminPath && user) {
+        // If already logged in and trying to access a public admin page, redirect to dashboard
         return NextResponse.redirect(new URL("/admin", request.url));
     }
 

@@ -11,13 +11,14 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
-    const isLoginPage = pathname === "/admin/login";
+    const publicPages = ["/admin/login", "/admin/forgot-password", "/admin/reset-password"];
+    const isPublicPage = publicPages.includes(pathname);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     // Auto-collapse on smaller desktop/tablet screens
     useEffect(() => {
-        if (isLoginPage) return;
+        if (isPublicPage) return;
 
         const handleResize = () => {
             if (window.innerWidth < 1280) {
@@ -29,7 +30,7 @@ export default function AdminLayout({
         handleResize(); // Initial check
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
-    }, [isLoginPage]);
+    }, [isPublicPage]);
 
     const toggleSidebar = () => {
         if (window.innerWidth < 1024) {
@@ -40,12 +41,12 @@ export default function AdminLayout({
     };
 
     // If it's the login page, don't show the dashboard shell
-    if (isLoginPage) {
+    if (isPublicPage) {
         return <>{children}</>;
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex font-sans overflow-x-hidden">
+        <div className="min-h-screen bg-[#F0F7F4] flex font-sans overflow-x-hidden">
             {/* Sidebar Component */}
             <AdminSidebar
                 isCollapsed={isCollapsed}
