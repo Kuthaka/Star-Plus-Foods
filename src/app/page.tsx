@@ -136,40 +136,99 @@ export default function Home() {
           </div>
         </section>
 
-        {/* COMPLIMENTS EVERYTHING SECTION */}
-        <section className="swirl-pattern py-16 px-4 md:px-20 border-y border-gray-200">
-          <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="flex flex-col gap-2 text-center md:text-left">
-              <h2 className="text-5xl md:text-7xl font-black text-gray-500 leading-none">COMPLIMENTS EVERYTHING</h2>
-              <p className="text-brand-teal font-black text-2xl md:text-3xl tracking-wider">JEERA RICE</p>
+        {/* E-COMMERCE PRODUCT LISTING SECTION */}
+        <section className="bg-white py-20 px-4 md:px-12">
+          <div className="container mx-auto">
+            {/* Section Header */}
+            <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+              <div className="space-y-2">
+                <h2 className="text-brand-orange font-black tracking-widest text-sm uppercase">Quick & Tasty</h2>
+                <h3 className="text-4xl md:text-5xl font-black text-brand-teal uppercase leading-tight">
+                  Our Best Sellers
+                </h3>
+              </div>
+              <div className="flex items-center gap-6 overflow-x-auto pb-2 w-full md:w-auto no-scrollbar">
+                {["All", "Curries", "Rice", "Sides", "Combos"].map((cat, i) => (
+                  <button key={i} className={`text-sm font-black uppercase tracking-widest whitespace-nowrap transition-colors ${i === 0 ? "text-brand-orange border-b-2 border-brand-orange" : "text-gray-400 hover:text-brand-teal"}`}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="relative w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
-              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Jeera Rice" fill className="object-contain" />
-            </div>
-          </div>
-        </section>
 
-        {/* COMBO SECTION */}
-        <section className="grid grid-cols-1 md:grid-cols-2">
-          {/* Curry Combos */}
-          <div className="bg-[#b4cbe9] py-16 px-8 flex flex-col md:flex-row items-center justify-center gap-8 mandala-pattern group cursor-pointer">
-            <div className="text-center md:text-left">
-              <h2 className="text-6xl md:text-7xl font-black text-white leading-none">CURRY</h2>
-              <h3 className="text-6xl md:text-7xl font-black text-white leading-none">COMBOS</h3>
-            </div>
-            <div className="relative w-64 h-64 md:w-80 md:h-80 transition-transform duration-500 group-hover:scale-105">
-              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Curry Combos" fill className="object-contain" />
-            </div>
-          </div>
+            {/* Product Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-y-12">
+              {[
+                { name: "Smoky Butter Chicken", price: "249", category: "Chef's Special", badge: "Hot" },
+                { name: "Jhannat Dal Fry", price: "189", category: "Quick Meal", badge: "Best Seller" },
+                { name: "Jeera Rice", price: "129", category: "Side Dish", badge: "" },
+                { name: "Dhaba Chicken Combo", price: "349", category: "Combos", badge: "New" },
+                { name: "Shahi Paneer", price: "229", category: "Classic", badge: "" },
+                { name: "Mix Veg Curry", price: "199", category: "Classic", badge: "" },
+                { name: "Dal Makhni", price: "219", category: "Chef's Special", badge: "Low Fat" },
+                { name: "Meal Combo Box", price: "399", category: "Combos", badge: "Popular" }
+              ].map((product, idx) => (
+                <div key={idx} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
+                  {/* Product Badge */}
+                  {product.badge && (
+                    <span className="absolute top-6 left-6 z-20 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">
+                      {product.badge}
+                    </span>
+                  )}
 
-          {/* Meal Combos */}
-          <div className="bg-[#b6d56d] py-16 px-8 flex flex-col md:flex-row items-center justify-center gap-8 mandala-pattern group cursor-pointer">
-            <div className="text-center md:text-left">
-              <h2 className="text-6xl md:text-7xl font-black text-white leading-none">MEAL</h2>
-              <h3 className="text-6xl md:text-7xl font-black text-white leading-none">COMBOS</h3>
+                  {/* Image Container */}
+                  <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
+                    <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
+                      <Image
+                        src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png"
+                        alt={product.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="flex flex-col gap-1 px-2">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
+                      {product.category}
+                    </span>
+                    <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">
+                      {product.name}
+                    </h4>
+
+                    {/* Rating placeholder */}
+                    <div className="flex items-center gap-1 my-2">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <svg key={s} className="w-3 h-3 text-brand-yellow fill-current" viewBox="0 0 20 20">
+                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                        </svg>
+                      ))}
+                      <span className="text-[10px] text-gray-400 font-bold ml-1">(4.9)</span>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex flex-col">
+                        <span className="text-gray-400 text-[10px] font-bold uppercase leading-none mb-1">Price</span>
+                        <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                      </div>
+                      <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="relative w-64 h-64 md:w-80 md:h-80 transition-transform duration-500 group-hover:scale-105">
-              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Meal Combos" fill className="object-contain" />
+
+            {/* Load More Button */}
+            <div className="mt-20 text-center">
+              <button className="group relative px-12 py-5 bg-brand-teal text-white font-black rounded-full overflow-hidden transition-all hover:pr-16">
+                <span className="relative z-10 tracking-[0.2em] text-xs uppercase">View All Menu</span>
+                <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-xl">→</span>
+              </button>
             </div>
           </div>
         </section>
