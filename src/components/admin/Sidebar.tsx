@@ -18,8 +18,8 @@ import {
 
 const MENU_ITEMS = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin" },
-    { name: "Orders", icon: ShoppingBag, path: "/admin/orders" },
     { name: "Products", icon: UtensilsCrossed, path: "/admin/products" },
+    { name: "Orders", icon: ShoppingBag, path: "/admin/orders" },
     { name: "Customers", icon: Users, path: "/admin/customers" },
     { name: "Analytics", icon: PieChart, path: "/admin/analytics" },
     { name: "Marketing", icon: BarChart3, path: "/admin/marketing" },
