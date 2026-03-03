@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag } from "lucide-react";
 import Tooltip from "@/components/ui/Tooltip";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -13,6 +15,7 @@ import CartDrawer from "@/components/cart/CartDrawer";
 export default function Navbar() {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -22,6 +25,8 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const isActive = (path: string) => pathname === path;
 
     return (
         <>
@@ -47,15 +52,18 @@ export default function Navbar() {
                     */}
                     <div className={`
                         absolute transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
-                        bg-white/95 backdrop-blur-2xl border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] rounded-full
-                        ${isScrolled ? "opacity-100 w-[600px] lg:w-[850px] h-[64px]" : "opacity-0 w-0 h-0"}
+                        bg-white/95 backdrop-blur-2xl border border-gray-200/50 rounded-full
+                        ${isScrolled
+                            ? "opacity-100 w-[600px] lg:w-[850px] h-[64px] shadow-[0_0_1px_rgba(0,0,0,0.1),0_12px_40px_-10px_rgba(0,0,0,0.12),0_0_15px_rgba(0,0,0,0.02)]"
+                            : "opacity-0 w-0 h-0 shadow-none"}
                     `} />
 
                     {/* 
                         Logo: Initial far-left. 
                         Docking: Glides into the left side of the white pill.
                     */}
-                    <div
+                    <Link
+                        href="/"
                         className={`
                             absolute transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] z-20
                             ${isScrolled
@@ -73,7 +81,7 @@ export default function Navbar() {
                                 priority
                             />
                         </div>
-                    </div>
+                    </Link>
 
                     {/* 
                         Nav Links: Always centered.
@@ -88,11 +96,36 @@ export default function Navbar() {
                         `}
                     >
                         <div className="flex items-center gap-4 md:gap-8">
-                            <a href="#" className="text-brand-orange font-black text-[10px] md:text-sm uppercase tracking-widest hover:scale-110 transition-transform">Home</a>
-                            <a href="#" className="text-gray-700 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:text-brand-orange transition-colors">Shop</a>
-                            <a href="#" className="text-gray-700 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:text-brand-orange transition-colors">Blogs</a>
-                            <a href="#" className="text-gray-700 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:text-brand-orange transition-colors">About</a>
-                            <a href="#" className="text-gray-700 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:text-brand-orange transition-colors">Contact</a>
+                            <Link
+                                href="/"
+                                className={`font-black text-[10px] md:text-sm uppercase tracking-widest transition-all hover:scale-110 ${isActive("/") ? "text-brand-orange scale-110" : "text-gray-700"}`}
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                href="/shop"
+                                className={`font-bold text-[10px] md:text-sm uppercase tracking-widest transition-all hover:text-brand-orange ${isActive("/shop") ? "text-brand-orange scale-110" : "text-gray-700"}`}
+                            >
+                                Shop
+                            </Link>
+                            <Link
+                                href="/blogs"
+                                className={`font-bold text-[10px] md:text-sm uppercase tracking-widest transition-all hover:text-brand-orange ${isActive("/blogs") ? "text-brand-orange scale-110" : "text-gray-700"}`}
+                            >
+                                Blogs
+                            </Link>
+                            <Link
+                                href="/about"
+                                className={`font-bold text-[10px] md:text-sm uppercase tracking-widest transition-all hover:text-brand-orange ${isActive("/about") ? "text-brand-orange scale-110" : "text-gray-700"}`}
+                            >
+                                About
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className={`font-bold text-[10px] md:text-sm uppercase tracking-widest transition-all hover:text-brand-orange ${isActive("/contact") ? "text-brand-orange scale-110" : "text-gray-700"}`}
+                            >
+                                Contact
+                            </Link>
                         </div>
                     </nav>
 
@@ -104,8 +137,8 @@ export default function Navbar() {
                         className={`
                             absolute transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] z-20
                             ${isScrolled
-                                ? "right-1/2 translate-x-[260px] lg:translate-x-[380px] gap-3 md:gap-4 scale-90"
-                                : "right-4 md:right-12 translate-x-0 gap-4 md:gap-6 scale-100"}
+                                ? "right-1/2 translate-x-[260px] lg:translate-x-[380px] gap-3 md:gap-4 scale-90 text-brand-teal"
+                                : `right-4 md:right-12 translate-x-0 gap-4 md:gap-6 scale-100 ${pathname === "/shop" ? "text-white" : "text-brand-teal"}`}
                         `}
                         style={{ transformStyle: "preserve-3d" }}
                     >
