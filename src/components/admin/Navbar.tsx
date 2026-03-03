@@ -1,7 +1,17 @@
 "use client";
 
-import React from "react";
-import { Search, Bell, ChevronDown, Globe, Menu, LayoutGrid } from "lucide-react";
+import React, { useState } from "react";
+import {
+    Search,
+    Bell,
+    ChevronDown,
+    Globe,
+    Menu,
+    User,
+    LogOut,
+    Settings,
+    ShieldCheck
+} from "lucide-react";
 import Link from "next/link";
 
 interface NavbarProps {
@@ -10,6 +20,8 @@ interface NavbarProps {
 }
 
 export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+
     return (
         <header className={`
             h-20 bg-white border-b border-gray-100 fixed top-0 right-0 z-[90] flex items-center justify-between px-4 md:px-10 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
@@ -56,18 +68,67 @@ export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
                 {/* Vertical Divider - Hidden on mobile */}
                 <div className="h-8 w-[1px] bg-gray-100 hidden sm:block"></div>
 
-                {/* User Profile */}
-                <button className="flex items-center gap-3 md:gap-4 group">
-                    <div className="hidden md:flex flex-col text-right">
-                        <span className="text-sm font-black text-brand-teal uppercase tracking-tight">Admin User</span>
-                        <span className="text-[10px] font-bold text-brand-orange uppercase tracking-widest leading-none mt-1">Super Admin</span>
-                    </div>
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-brand-teal text-white flex items-center justify-center font-black text-lg shadow-lg shadow-brand-teal/10 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300 relative overflow-hidden">
-                        <span className="relative z-10">A</span>
-                        <div className="absolute inset-0 bg-brand-orange opacity-0 group-hover:opacity-10 transition-opacity" />
-                    </div>
-                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-brand-teal group-hover:translate-y-0.5 transition-all hidden sm:block" />
-                </button>
+                {/* User Profile with Dropdown */}
+                <div className="relative">
+                    <button
+                        onClick={() => setIsProfileOpen(!isProfileOpen)}
+                        className="flex items-center gap-3 md:gap-4 group"
+                    >
+                        <div className="hidden md:flex flex-col text-right">
+                            <span className="text-sm font-black text-brand-teal uppercase tracking-tight">Admin User</span>
+                            <span className="text-[10px] font-bold text-brand-orange uppercase tracking-widest leading-none mt-1">Super Admin</span>
+                        </div>
+                        <div className={`
+                            w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-brand-teal text-white flex items-center justify-center font-black text-lg transition-all duration-300 relative overflow-hidden
+                            ${isProfileOpen ? "ring-4 ring-brand-orange/10 scale-105" : "group-hover:scale-105 shadow-lg shadow-brand-teal/10"}
+                        `}>
+                            <span className="relative z-10 text-xl font-black">A</span>
+                            <div className="absolute inset-0 bg-brand-orange opacity-0 group-hover:opacity-10 transition-opacity" />
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 hidden sm:block ${isProfileOpen ? "rotate-180 text-brand-teal" : "group-hover:text-brand-teal"}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isProfileOpen && (
+                        <>
+                            <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)} />
+                            <div className="absolute top-full right-0 mt-4 w-64 bg-white rounded-3xl shadow-2xl border border-gray-50 py-3 z-50 animate-in fade-in slide-in-from-top-4 duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                                <div className="px-6 py-4 border-b border-gray-50 mb-2">
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Signed in as</p>
+                                    <p className="text-sm font-black text-brand-teal uppercase tracking-tighter">admin@starplus.com</p>
+                                </div>
+                                <div className="px-2">
+                                    <button className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-teal transition-all group text-left">
+                                        <div className="p-2 bg-gray-50 rounded-xl group-hover:bg-white transition-colors">
+                                            <User className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-xs font-bold uppercase tracking-widest">My Profile</span>
+                                    </button>
+                                    <button className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-teal transition-all group text-left">
+                                        <div className="p-2 bg-gray-50 rounded-xl group-hover:bg-white transition-colors">
+                                            <ShieldCheck className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-xs font-bold uppercase tracking-widest">Security</span>
+                                    </button>
+                                    <button className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-teal transition-all group text-left">
+                                        <div className="p-2 bg-gray-50 rounded-xl group-hover:bg-white transition-colors">
+                                            <Settings className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-xs font-bold uppercase tracking-widest">Account Settings</span>
+                                    </button>
+                                </div>
+                                <div className="px-2 mt-2 pt-2 border-t border-gray-50">
+                                    <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all group text-left">
+                                        <div className="p-2 bg-red-50 rounded-xl group-hover:bg-white transition-colors">
+                                            <LogOut className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-xs font-bold uppercase tracking-widest">Sign Out</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </header>
     );
