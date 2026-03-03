@@ -4,10 +4,11 @@ import Image from "next/image";
 import { Timer, Heart, Plane, ShieldCheck } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col font-sans">
       {/* Top Banner */}
       <TopBanner />
 
@@ -91,7 +92,90 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* CHEF'S SPECIAL SECTION */}
+        <section className="relative overflow-hidden">
+          {/* Section Header */}
+          <div className="bg-brand-teal text-white py-10 text-center">
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Chef's Special</h2>
+          </div>
+
+          {/* Special Dishes Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full">
+            {/* Item 1: Spicy Dhaba Chicken */}
+            <div className="bg-[#1e3b3e] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Spicy Dhaba Chicken" fill className="object-contain" />
+              </div>
+              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Spicy Dhaba Chicken</h3>
+            </div>
+
+            {/* Item 2: Jhannat Dal Fry */}
+            <div className="bg-[#ff6138] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Jhannat Dal Fry" fill className="object-contain" />
+              </div>
+              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Jhannat Dal Fry</h3>
+            </div>
+
+            {/* Item 3: Smoky Butter Chicken */}
+            <div className="bg-[#ffb400] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Smoky Butter Chicken" fill className="object-contain" />
+              </div>
+              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Smoky Butter Chicken</h3>
+            </div>
+
+            {/* Item 4: Shahi Dal Makhni */}
+            <div className="bg-[#ac5e2e] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Shahi Dal Makhni" fill className="object-contain" />
+              </div>
+              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Shahi Dal Makhni</h3>
+            </div>
+          </div>
+        </section>
+
+        {/* COMPLIMENTS EVERYTHING SECTION */}
+        <section className="swirl-pattern py-16 px-4 md:px-20 border-y border-gray-200">
+          <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="flex flex-col gap-2 text-center md:text-left">
+              <h2 className="text-5xl md:text-7xl font-black text-gray-500 leading-none">COMPLIMENTS EVERYTHING</h2>
+              <p className="text-brand-teal font-black text-2xl md:text-3xl tracking-wider">JEERA RICE</p>
+            </div>
+            <div className="relative w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
+              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Jeera Rice" fill className="object-contain" />
+            </div>
+          </div>
+        </section>
+
+        {/* COMBO SECTION */}
+        <section className="grid grid-cols-1 md:grid-cols-2">
+          {/* Curry Combos */}
+          <div className="bg-[#b4cbe9] py-16 px-8 flex flex-col md:flex-row items-center justify-center gap-8 mandala-pattern group cursor-pointer">
+            <div className="text-center md:text-left">
+              <h2 className="text-6xl md:text-7xl font-black text-white leading-none">CURRY</h2>
+              <h3 className="text-6xl md:text-7xl font-black text-white leading-none">COMBOS</h3>
+            </div>
+            <div className="relative w-64 h-64 md:w-80 md:h-80 transition-transform duration-500 group-hover:scale-105">
+              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Curry Combos" fill className="object-contain" />
+            </div>
+          </div>
+
+          {/* Meal Combos */}
+          <div className="bg-[#b6d56d] py-16 px-8 flex flex-col md:flex-row items-center justify-center gap-8 mandala-pattern group cursor-pointer">
+            <div className="text-center md:text-left">
+              <h2 className="text-6xl md:text-7xl font-black text-white leading-none">MEAL</h2>
+              <h3 className="text-6xl md:text-7xl font-black text-white leading-none">COMBOS</h3>
+            </div>
+            <div className="relative w-64 h-64 md:w-80 md:h-80 transition-transform duration-500 group-hover:scale-105">
+              <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Meal Combos" fill className="object-contain" />
+            </div>
+          </div>
+        </section>
       </main>
+
+      <Footer />
     </div>
   );
 }
