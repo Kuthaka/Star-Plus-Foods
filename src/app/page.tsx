@@ -1,47 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { Search, User, ShoppingBag, Timer, Heart, Plane, ShieldCheck } from "lucide-react";
+import { Timer, Heart, Plane, ShieldCheck } from "lucide-react";
+import TopBanner from "@/components/headers/TopBanner";
+import Navbar from "@/components/headers/Navbar";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Top Banner */}
-      <div className="bg-brand-teal text-white text-[10px] md:text-xs py-2 text-center font-medium tracking-wide">
-        Free Shipping across India on Orders above Rs 500/-
-      </div>
+      <TopBanner />
 
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="hero-gradient relative min-h-[85vh] flex flex-col pt-4 overflow-hidden">
           {/* Header/Nav inside Hero for that seamless look */}
-          <header className="container mx-auto px-4 md:px-8 flex items-center justify-between relative z-20">
-            {/* Logo */}
-            <div className="w-16 md:w-24 relative h-16 md:h-24">
-              <Image
-                src="/star/logo-bg.png"
-                alt="Star Plus Foods Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden lg:flex items-center gap-8 bg-brand-tan/60 backdrop-blur-md px-10 py-3 rounded-full border border-white/20">
-              <a href="#" className="text-brand-orange font-bold text-sm uppercase tracking-wider">Home</a>
-              <a href="#" className="text-gray-700 font-semibold text-sm uppercase tracking-wider hover:text-brand-orange transition-colors">Shop</a>
-              <a href="#" className="text-gray-700 font-semibold text-sm uppercase tracking-wider hover:text-brand-orange transition-colors">Curry Combos</a>
-              <a href="#" className="text-gray-700 font-semibold text-sm uppercase tracking-wider hover:text-brand-orange transition-colors">Meal Combos</a>
-              <a href="#" className="text-gray-700 font-semibold text-sm uppercase tracking-wider hover:text-brand-orange transition-colors">Contact Us</a>
-            </nav>
-
-            {/* Icons */}
-            <div className="flex items-center gap-4 md:gap-6 text-gray-800">
-              <Search className="w-5 h-5 cursor-pointer hover:text-brand-orange transition-colors" />
-              <User className="w-5 h-5 cursor-pointer hover:text-brand-orange transition-colors" />
-              <ShoppingBag className="w-5 h-5 cursor-pointer hover:text-brand-orange transition-colors" />
-            </div>
-          </header>
+          <Navbar />
 
           <div className="container mx-auto px-4 md:px-12 flex-grow flex flex-col md:flex-row items-center justify-center gap-12 pt-8 pb-16 relative z-10">
             {/* Left side vertical text */}
