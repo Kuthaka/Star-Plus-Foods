@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List } from "lucide-react";
+import { Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List, ShoppingBag } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
 import Footer from "@/components/Footer";
@@ -22,15 +22,28 @@ const PRODUCTS = [
     { id: 12, name: "Gulab Jamun (2pcs)", price: "79", category: "Desserts", badge: "Sweet", rating: 5.0 }
 ];
 
-const CATEGORIES = ["All", "Curries", "Rice", "Sides", "Combos", "Drinks", "Desserts"];
+const CATEGORIES = ["All", "Curries", "Rice", "Sides", "Combos", "Drinks"];
 
 export default function Shop() {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [sortBy, setSortBy] = useState("Featured");
+    const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+    const [isSortOpen, setIsSortOpen] = useState(false);
 
-    const filteredProducts = selectedCategory === "All"
-        ? PRODUCTS
-        : PRODUCTS.filter(p => p.category === selectedCategory);
+    const filteredAndSortedProducts = (() => {
+        let result = selectedCategory === "All"
+            ? [...PRODUCTS]
+            : PRODUCTS.filter(p => p.category === selectedCategory);
+
+        if (sortBy === "Price: Low to High") {
+            result.sort((a, b) => Number(a.price) - Number(b.price));
+        } else if (sortBy === "Price: High to Low") {
+            result.sort((a, b) => Number(b.price) - Number(a.price));
+        }
+        return result;
+    })();
+
+    const sortOptions = ["Featured", "Price: Low to High", "Price: High to Low"];
 
     return (
         <div className="flex min-h-screen flex-col font-sans">
@@ -83,20 +96,47 @@ export default function Shop() {
                         <div className="flex items-center justify-between w-full lg:w-auto gap-4 md:gap-8">
                             <div className="flex items-center gap-2">
                                 <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sort By:</span>
-                                <div className="relative group">
-                                    <button className="flex items-center gap-2 text-sm font-black text-brand-teal uppercase tracking-wider">
-                                        {sortBy} <ChevronDown className="w-4 h-4 text-brand-orange" />
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsSortOpen(!isSortOpen)}
+                                        className="flex items-center gap-2 text-sm font-black text-brand-teal uppercase tracking-wider min-w-[140px] justify-between"
+                                    >
+                                        {sortBy} <ChevronDown className={`w-4 h-4 text-brand-orange transition-transform duration-300 ${isSortOpen ? 'rotate-180' : ''}`} />
                                     </button>
+
+                                    {/* Sort Dropdown */}
+                                    {isSortOpen && (
+                                        <div className="absolute top-full right-0 mt-4 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[60] py-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                                            {sortOptions.map((option) => (
+                                                <button
+                                                    key={option}
+                                                    onClick={() => {
+                                                        setSortBy(option);
+                                                        setIsSortOpen(false);
+                                                    }}
+                                                    className={`w-full text-left px-6 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${sortBy === option ? 'text-brand-orange bg-brand-orange/5' : 'text-gray-600 hover:bg-gray-50'}`}
+                                                >
+                                                    {option}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="h-8 w-[1px] bg-gray-100 hidden md:block"></div>
 
                             <div className="flex items-center gap-3">
-                                <button className="p-2 bg-gray-100 rounded-xl text-brand-teal hover:bg-brand-teal hover:text-white transition-colors">
+                                <button
+                                    onClick={() => setViewMode("grid")}
+                                    className={`p-2 rounded-xl transition-all ${viewMode === "grid" ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20" : "bg-gray-100 text-gray-400 hover:bg-gray-200"}`}
+                                >
                                     <LayoutGrid className="w-5 h-5" />
                                 </button>
-                                <button className="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:bg-gray-50 transition-colors">
+                                <button
+                                    onClick={() => setViewMode("list")}
+                                    className={`p-2 rounded-xl transition-all ${viewMode === "list" ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20" : "bg-gray-100 text-gray-400 hover:bg-gray-200"}`}
+                                >
                                     <List className="w-5 h-5" />
                                 </button>
                             </div>
@@ -106,84 +146,105 @@ export default function Shop() {
                     {/* Active Filters Display */}
                     <div className="flex items-center justify-between mb-8 px-2">
                         <p className="text-sm font-bold text-gray-400">
-                            Showing <span className="text-brand-teal">{filteredProducts.length}</span> results for <span className="text-brand-orange uppercase">{selectedCategory}</span>
+                            Showing <span className="text-brand-teal">{filteredAndSortedProducts.length}</span> results for <span className="text-brand-orange uppercase">{selectedCategory}</span>
                         </p>
                     </div>
 
-                    {/* Product Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {filteredProducts.map((product) => (
-                            <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
-                                {/* Product Badge */}
-                                {product.badge && (
-                                    <span className="absolute top-6 left-6 z-20 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter blur-none">
-                                        {product.badge}
-                                    </span>
-                                )}
+                    {/* Product Listing */}
+                    {viewMode === "grid" ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {filteredAndSortedProducts.map((product) => (
+                                <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
+                                    {/* Product Badge */}
+                                    {product.badge && (
+                                        <span className="absolute top-6 left-6 z-20 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter blur-none">
+                                            {product.badge}
+                                        </span>
+                                    )}
 
-                                {/* Image Container */}
-                                <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
-                                    <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
-                                        <Image
-                                            src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png"
-                                            alt={product.name}
-                                            fill
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                    {/* Quick Actions Hover */}
-                                    <div className="absolute inset-0 bg-brand-teal/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-30">
-                                        <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-teal hover:bg-brand-orange hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 shadow-xl">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Product Info */}
-                                <div className="flex flex-col gap-1 px-2">
-                                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
-                                        {product.category}
-                                    </span>
-                                    <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">
-                                        {product.name}
-                                    </h4>
-
-                                    {/* Rating */}
-                                    <div className="flex items-center gap-1 my-2">
-                                        {[1, 2, 3, 4, 5].map((s) => (
-                                            <svg key={s} className={`w-3 h-3 ${s <= Math.floor(product.rating) ? "text-brand-yellow fill-current" : "text-gray-200 fill-current"}`} viewBox="0 0 20 20">
-                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                                            </svg>
-                                        ))}
-                                        <span className="text-[10px] text-gray-400 font-bold ml-1">({product.rating})</span>
-                                    </div>
-
-                                    <div className="flex items-center justify-between mt-2">
-                                        <div className="flex flex-col">
-                                            <span className="text-gray-400 text-[10px] font-bold uppercase leading-none mb-1">Price</span>
-                                            <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                                    {/* Image Container */}
+                                    <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
+                                        <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
+                                            <Image
+                                                src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png"
+                                                alt={product.name}
+                                                fill
+                                                className="object-contain"
+                                            />
                                         </div>
-                                        <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                            </svg>
-                                        </button>
+                                        <div className="absolute inset-0 bg-brand-teal/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-30">
+                                            <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-teal hover:bg-brand-orange hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 shadow-xl">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="flex flex-col gap-1 px-2">
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">{product.category}</span>
+                                        <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                                        <div className="flex items-center gap-1 my-2">
+                                            {[1, 2, 3, 4, 5].map((s) => (
+                                                <svg key={s} className={`w-3 h-3 ${s <= Math.floor(product.rating) ? "text-brand-yellow fill-current" : "text-gray-200 fill-current"}`} viewBox="0 0 20 20">
+                                                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                                </svg>
+                                            ))}
+                                            <span className="text-[10px] text-gray-400 font-bold ml-1">({product.rating})</span>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-2">
+                                            <div className="flex flex-col">
+                                                <span className="text-gray-400 text-[10px] font-bold uppercase mb-1">Price</span>
+                                                <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                                            </div>
+                                            <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {filteredAndSortedProducts.map((product) => (
+                                <div key={product.id} className="group flex flex-col md:flex-row bg-white rounded-3xl p-5 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-transparent hover:border-gray-50 items-center gap-6">
+                                    <div className="relative w-40 h-40 bg-gray-50 rounded-2xl flex-shrink-0 flex items-center justify-center p-5 overflow-hidden">
+                                        <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-lg">
+                                            <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt={product.name} fill className="object-contain" />
+                                        </div>
+                                        {product.badge && <span className="absolute top-3 left-3 bg-brand-orange text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase">{product.badge}</span>}
+                                    </div>
+                                    <div className="flex-grow text-center md:text-left min-w-0">
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{product.category}</span>
+                                        <h4 className="text-brand-teal font-black text-xl uppercase mt-1 mb-2 group-hover:text-brand-orange transition-colors truncate">{product.name}</h4>
+                                        <div className="flex items-center justify-center md:justify-start gap-1 mb-3">
+                                            {[1, 2, 3, 4, 5].map((s) => (
+                                                <svg key={s} className={`w-3 h-3 ${s <= Math.floor(product.rating) ? "text-brand-yellow fill-current" : "text-gray-200 fill-current"}`} viewBox="0 0 20 20">
+                                                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                                </svg>
+                                            ))}
+                                            <span className="text-[10px] text-gray-400 font-bold ml-1">({product.rating})</span>
+                                        </div>
+                                        <div className="flex items-center justify-center md:justify-between gap-4">
+                                            <span className="text-brand-teal font-black text-2xl whitespace-nowrap">₹{product.price}</span>
+                                            <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110">
+                                                <ShoppingBag className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
-                    {/* Pagination Placeholder */}
+                    {/* Pagination */}
                     <div className="mt-20 flex items-center justify-center gap-2">
                         {[1, 2, 3].map((num) => (
                             <button key={num} className={`w-12 h-12 rounded-2xl font-black text-sm flex items-center justify-center transition-all ${num === 1 ? "bg-brand-teal text-white shadow-lg shadow-brand-teal/20" : "bg-white text-gray-400 hover:bg-gray-100"}`}>
                                 {num}
                             </button>
                         ))}
-                        <button className="w-12 h-12 bg-white rounded-2xl font-black text-brand-teal flex items-center justify-center hover:bg-gray-100 transition-all">
-                            →
-                        </button>
+                        <button className="w-12 h-12 bg-white rounded-2xl font-black text-brand-teal flex items-center justify-center hover:bg-gray-100 transition-all">→</button>
                     </div>
                 </div>
             </main>
