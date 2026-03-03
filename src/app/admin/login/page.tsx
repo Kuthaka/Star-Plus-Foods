@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, Loader2, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Mail, Lock, Loader2, ArrowRight, ShieldCheck, AlertCircle, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -83,7 +84,7 @@ export default function AdminLoginPage() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="admin@starplus.com"
-                                        className="w-full h-14 bg-gray-50/50 border-none rounded-2xl pl-14 pr-6 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/5 transition-all outline-none"
+                                        className="w-full h-14 bg-[#FEFCE8]/80 border-none rounded-2xl pl-14 pr-6 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none"
                                     />
                                 </div>
                             </div>
@@ -97,13 +98,20 @@ export default function AdminLoginPage() {
                                 <div className="relative">
                                     <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-brand-orange transition-colors" />
                                     <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
-                                        className="w-full h-14 bg-gray-50/50 border-none rounded-2xl pl-14 pr-6 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/5 transition-all outline-none"
+                                        className="w-full h-14 bg-[#FEFCE8]/80 border-none rounded-2xl pl-14 pr-14 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none"
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-teal transition-colors"
+                                    >
+                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
                                 </div>
                             </div>
 
