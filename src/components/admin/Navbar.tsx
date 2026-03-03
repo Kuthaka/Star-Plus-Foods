@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Search,
     Bell,
@@ -13,6 +13,8 @@ import {
     ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
     isCollapsed: boolean;
@@ -21,6 +23,23 @@ interface NavbarProps {
 
 export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [userEmail, setUserEmail] = useState<string | null>(null);
+    const supabase = createClient();
+    const router = useRouter();
+
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) setUserEmail(user.email || null);
+        };
+        getUser();
+    }, [supabase.auth]);
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        router.push("/admin/login");
+        router.refresh();
+    };
 
     return (
         <header className={`
@@ -82,7 +101,7 @@ export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
                             w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-brand-teal text-white flex items-center justify-center font-black text-lg transition-all duration-300 relative overflow-hidden
                             ${isProfileOpen ? "ring-4 ring-brand-orange/10 scale-105" : "group-hover:scale-105 shadow-lg shadow-brand-teal/10"}
                         `}>
-                            <span className="relative z-10 text-xl font-black">A</span>
+                            <span className="relative z-10 text-xl font-black">{userEmail?.[0].toUpperCase() || "A"}</span>
                             <div className="absolute inset-0 bg-brand-orange opacity-0 group-hover:opacity-10 transition-opacity" />
                         </div>
                         <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 hidden sm:block ${isProfileOpen ? "rotate-180 text-brand-teal" : "group-hover:text-brand-teal"}`} />
@@ -95,7 +114,7 @@ export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
                             <div className="absolute top-full right-0 mt-4 w-64 bg-white rounded-3xl shadow-2xl border border-gray-50 py-3 z-50 animate-in fade-in slide-in-from-top-4 duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
                                 <div className="px-6 py-4 border-b border-gray-50 mb-2">
                                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Signed in as</p>
-                                    <p className="text-sm font-black text-brand-teal uppercase tracking-tighter">admin@starplus.com</p>
+                                    <p className="text-sm font-black text-brand-teal uppercase tracking-tighter truncate">{userEmail || "Loading..."}</p>
                                 </div>
                                 <div className="px-2">
                                     <button className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-teal transition-all group text-left">
@@ -118,7 +137,10 @@ export default function AdminNavbar({ isCollapsed, onMenuClick }: NavbarProps) {
                                     </button>
                                 </div>
                                 <div className="px-2 mt-2 pt-2 border-t border-gray-50">
-                                    <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all group text-left">
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all group text-left"
+                                    >
                                         <div className="p-2 bg-red-50 rounded-xl group-hover:bg-white transition-colors">
                                             <LogOut className="w-4 h-4" />
                                         </div>

@@ -3,17 +3,22 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "@/components/admin/Sidebar";
 import AdminNavbar from "@/components/admin/Navbar";
+import { usePathname } from "next/navigation";
 
 export default function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const pathname = usePathname();
+    const isLoginPage = pathname === "/admin/login";
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     // Auto-collapse on smaller desktop/tablet screens
     useEffect(() => {
+        if (isLoginPage) return;
+
         const handleResize = () => {
             if (window.innerWidth < 1280) {
                 setIsCollapsed(true);
@@ -24,7 +29,7 @@ export default function AdminLayout({
         handleResize(); // Initial check
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    }, [isLoginPage]);
 
     const toggleSidebar = () => {
         if (window.innerWidth < 1024) {
@@ -33,6 +38,11 @@ export default function AdminLayout({
             setIsCollapsed(!isCollapsed);
         }
     };
+
+    // If it's the login page, don't show the dashboard shell
+    if (isLoginPage) {
+        return <>{children}</>;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 flex font-sans overflow-x-hidden">
