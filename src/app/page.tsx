@@ -1,12 +1,57 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Timer, Heart, Plane, ShieldCheck } from "lucide-react";
+import { Timer, Heart, Plane, ShieldCheck, Loader2, UtensilsCrossed, Plus } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
 import Footer from "@/components/Footer";
+import { createClient } from "@/lib/supabase/client";
+import { Product } from "@/types/product";
+import { Category } from "@/types/category";
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 1. Fetch Categories
+        const { data: catData } = await supabase
+          .from("categories")
+          .select("*")
+          .eq("is_listed", true)
+          .order("name", { ascending: true });
+
+        if (catData) setCategories(catData);
+
+        // 2. Fetch Products
+        const { data: prodData } = await supabase
+          .from("products")
+          .select("*")
+          .eq("is_listed", true)
+          .order("created_at", { ascending: false });
+
+        if (prodData) setProducts(prodData);
+      } catch (err) {
+        console.error("Error fetching home data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter(p =>
+    selectedCategory === "All" || p.category === selectedCategory
+  );
+
   return (
     <div className="flex min-h-screen flex-col font-sans">
       {/* Top Banner */}
@@ -148,9 +193,19 @@ export default function Home() {
                 </h3>
               </div>
               <div className="flex items-center gap-6 overflow-x-auto pb-2 w-full md:w-auto no-scrollbar">
-                {["All", "Curries", "Rice", "Sides", "Combos"].map((cat, i) => (
-                  <button key={i} className={`text-sm font-black uppercase tracking-widest whitespace-nowrap transition-colors ${i === 0 ? "text-brand-orange border-b-2 border-brand-orange" : "text-gray-400 hover:text-brand-teal"}`}>
-                    {cat}
+                <button
+                  onClick={() => setSelectedCategory("All")}
+                  className={`text-sm font-black uppercase tracking-widest whitespace-nowrap transition-colors ${selectedCategory === "All" ? "text-brand-orange border-b-2 border-brand-orange" : "text-gray-400 hover:text-brand-teal"}`}
+                >
+                  All
+                </button>
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.name)}
+                    className={`text-sm font-black uppercase tracking-widest whitespace-nowrap transition-colors ${selectedCategory === cat.name ? "text-brand-orange border-b-2 border-brand-orange" : "text-gray-400 hover:text-brand-teal"}`}
+                  >
+                    {cat.name}
                   </button>
                 ))}
               </div>
@@ -158,69 +213,74 @@ export default function Home() {
 
             {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-y-12">
-              {[
-                { name: "Smoky Butter Chicken", price: "249", category: "Chef's Special", badge: "Hot" },
-                { name: "Jhannat Dal Fry", price: "189", category: "Quick Meal", badge: "Best Seller" },
-                { name: "Jeera Rice", price: "129", category: "Side Dish", badge: "" },
-                { name: "Dhaba Chicken Combo", price: "349", category: "Combos", badge: "New" },
-                { name: "Shahi Paneer", price: "229", category: "Classic", badge: "" },
-                { name: "Mix Veg Curry", price: "199", category: "Classic", badge: "" },
-                { name: "Dal Makhni", price: "219", category: "Chef's Special", badge: "Low Fat" },
-                { name: "Meal Combo Box", price: "399", category: "Combos", badge: "Popular" }
-              ].map((product, idx) => (
-                <div key={idx} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
-                  {/* Product Badge */}
-                  {product.badge && (
-                    <span className="absolute top-6 left-6 z-20 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">
-                      {product.badge}
-                    </span>
-                  )}
-
-                  {/* Image Container */}
-                  <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
-                    <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
-                      <Image
-                        src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png"
-                        alt={product.name}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+              {loading ? (
+                /* Skeleton Loading State */
+                [...Array(4)].map((_, i) => (
+                  <div key={i} className="flex flex-col bg-white rounded-3xl p-4 border border-gray-100 animate-pulse">
+                    <div className="aspect-square bg-gray-50 rounded-2xl mb-6" />
+                    <div className="h-4 w-2/3 bg-gray-50 rounded mb-2" />
+                    <div className="h-3 w-1/3 bg-gray-50 rounded" />
                   </div>
-
-                  {/* Product Info */}
-                  <div className="flex flex-col gap-1 px-2">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
-                      {product.category}
-                    </span>
-                    <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">
-                      {product.name}
-                    </h4>
-
-                    {/* Rating placeholder */}
-                    <div className="flex items-center gap-1 my-2">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <svg key={s} className="w-3 h-3 text-brand-yellow fill-current" viewBox="0 0 20 20">
-                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                        </svg>
-                      ))}
-                      <span className="text-[10px] text-gray-400 font-bold ml-1">(4.9)</span>
-                    </div>
-
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex flex-col">
-                        <span className="text-gray-400 text-[10px] font-bold uppercase leading-none mb-1">Price</span>
-                        <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                ))
+              ) : filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
+                    {/* Image Container */}
+                    <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
+                      <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
+                        {product.images?.[0] ? (
+                          <Image
+                            src={product.images[0]}
+                            alt={product.name}
+                            fill
+                            className="object-contain"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center text-gray-200">
+                            <UtensilsCrossed className="w-12 h-12 mb-2" />
+                            <span className="text-[10px] font-black uppercase">No Image</span>
+                          </div>
+                        )}
                       </div>
-                      <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                      </button>
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="flex flex-col gap-1 px-2">
+                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
+                        {product.category}
+                      </span>
+                      <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">
+                        {product.name}
+                      </h4>
+
+                      {/* Rating placeholder */}
+                      <div className="flex items-center gap-1 my-2">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <svg key={s} className="w-3 h-3 text-brand-yellow fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                          </svg>
+                        ))}
+                        <span className="text-[10px] text-gray-400 font-bold ml-1">(4.9)</span>
+                      </div>
+
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex flex-col">
+                          <span className="text-gray-400 text-[10px] font-bold uppercase leading-none mb-1">Price</span>
+                          <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                        </div>
+                        <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
+                          <Plus className="w-5 h-5 text-white" />
+                        </button>
+                      </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="col-span-full py-20 text-center opacity-40">
+                  <UtensilsCrossed className="w-16 h-16 mx-auto mb-4" />
+                  <p className="text-sm font-black uppercase tracking-widest">No Products Found in this Category</p>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Load More Button */}
