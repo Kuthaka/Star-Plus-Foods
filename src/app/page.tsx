@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Timer, Heart, Plane, ShieldCheck, Loader2, UtensilsCrossed, Plus } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
@@ -17,6 +18,7 @@ export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const supabase = createClient();
 
@@ -67,7 +69,7 @@ export default function Home() {
 
           <div className="container mx-auto px-4 md:px-12 flex-grow flex flex-col md:flex-row items-center justify-center gap-12 pt-8 pb-16 relative z-10">
             {/* Left side vertical text - decreased size and moved down */}
-            <div className="hidden xl:block absolute left-8 top-48 opacity-10 pointer-events-none flex items-center">
+            <div className="hidden xl:block absolute left-8 top-48 opacity-10 hover:opacity-25 transition-opacity duration-700 cursor-default flex items-center z-20">
               <h1 className="text-6xl font-black vertical-text tracking-[0.2em] text-white whitespace-nowrap uppercase">STAR PLUS</h1>
             </div>
 
@@ -98,7 +100,10 @@ export default function Home() {
                 Recipes From the Master Chefs of <br className="hidden md:block" /> Nameless Streets of India
               </p>
 
-              <button className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-10 py-5 rounded-full text-lg tracking-widest shadow-xl shadow-brand-orange/20 transition-all hover:-translate-y-1 mt-4">
+              <button
+                onClick={() => router.push('/shop')}
+                className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-10 py-5 rounded-full text-lg tracking-widest shadow-xl shadow-brand-orange/20 transition-all hover:-translate-y-1 mt-4"
+              >
                 YES, I'M HUNGRY
               </button>
             </div>
