@@ -153,7 +153,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-8 border-t bg-gray-50/50">
+                <div className="p-8 pb-32 md:pb-8 border-t bg-gray-50/50">
                     <div className="flex justify-between items-center mb-6">
                         <span className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">Summary</span>
                         <div className="text-right">
