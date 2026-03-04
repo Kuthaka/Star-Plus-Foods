@@ -8,5 +8,6 @@ export type SiteSettings = {
     facebook_url: string;
     youtube_url: string;
     address: string;
+    top_banner_text: string;
     updated_at: string;
 };

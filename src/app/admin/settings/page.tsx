@@ -17,7 +17,8 @@ import {
     AlertCircle,
     Share2,
     Info,
-    ShieldCheck
+    ShieldCheck,
+    Bell
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { SiteSettings } from "@/types/settings";
@@ -58,7 +59,8 @@ export default function AdminSettingsPage() {
                     instagram_url: "",
                     facebook_url: "",
                     youtube_url: "",
-                    address: ""
+                    address: "",
+                    top_banner_text: ""
                 };
                 setSettings(defaultSettings as SiteSettings);
             }
@@ -78,9 +80,12 @@ export default function AdminSettingsPage() {
         setMessage(null);
 
         try {
+            // Exclude read-only fields if they exist
+            const { updated_at, ...updateData } = settings;
+
             const { error } = await supabase
                 .from("settings")
-                .upsert(settings, { onConflict: 'id' });
+                .upsert(updateData, { onConflict: 'id' });
 
             if (error) throw error;
             setMessage({ type: 'success', text: "Global settings updated successfully!" });
@@ -88,7 +93,10 @@ export default function AdminSettingsPage() {
             // Auto hide success message
             setTimeout(() => setMessage(null), 5000);
         } catch (err: any) {
-            console.error("Error updating settings:", err);
+            console.error("Full Error Object:", JSON.stringify(err, null, 2));
+            console.error("Error Message:", err.message);
+            console.error("Error Detail:", err.details);
+            console.error("Error Hint:", err.hint);
             setMessage({ type: 'error', text: err.message || "Failed to update settings." });
         } finally {
             setIsSaving(false);
@@ -174,9 +182,23 @@ export default function AdminSettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2 group">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Company Physical Address</label>
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                                            <Bell className="w-3 h-3 text-brand-orange" /> Top Banner Announcement
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. Free Shipping across India on Orders above Rs 500/-"
+                                            value={settings.top_banner_text || ""}
+                                            onChange={(e) => handleChange("top_banner_text", e.target.value)}
+                                            className="w-full h-16 bg-[#FFF7ED]/40 border-none rounded-[1.25rem] px-8 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/5 transition-all outline-none"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 group">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                                            <MapPin className="w-3 h-3 text-brand-teal" /> Company Physical Address
+                                        </label>
                                         <textarea
-                                            rows={3}
+                                            rows={2}
                                             value={settings.address}
                                             onChange={(e) => handleChange("address", e.target.value)}
                                             placeholder="Building, Street, City, State, ZIP"

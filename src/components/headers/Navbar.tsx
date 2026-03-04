@@ -138,7 +138,7 @@ export default function Navbar() {
                             absolute transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] z-20
                             ${isScrolled
                                 ? "right-1/2 translate-x-[260px] lg:translate-x-[380px] gap-3 md:gap-4 scale-90 text-brand-teal"
-                                : `right-4 md:right-12 translate-x-0 gap-4 md:gap-6 scale-100 ${["/shop", "/about", "/contact"].includes(pathname) ? "text-white" : "text-brand-teal"}`}
+                                : `right-4 md:right-12 translate-x-0 gap-4 md:gap-6 scale-100 ${["/shop", "/about", "/contact", "/blogs"].some(p => pathname.startsWith(p)) ? "text-white" : "text-brand-teal"}`}
                         `}
                         style={{ transformStyle: "preserve-3d" }}
                     >
