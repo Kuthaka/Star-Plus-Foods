@@ -196,14 +196,14 @@ export default function Shop() {
                                 {filteredAndSortedProducts.map((product) => (
                                     <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
                                         {/* Image Container */}
-                                        <Link href={`/shop/${product.id}`} className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8 cursor-pointer">
+                                        <Link href={`/shop/${product.id}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center cursor-pointer">
                                             <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl font-bold uppercase tracking-widest text-[#cfcfcf]/50">
                                                 {product.images?.[0] ? (
                                                     <Image
                                                         src={product.images[0]}
                                                         alt={product.name}
                                                         fill
-                                                        className="object-contain"
+                                                        className="object-cover"
                                                     />
                                                 ) : (
                                                     <UtensilsCrossed className="w-12 h-12" />
@@ -247,10 +247,10 @@ export default function Shop() {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 {filteredAndSortedProducts.map((product) => (
                                     <div key={product.id} className="group flex flex-col md:flex-row bg-white rounded-3xl p-5 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-transparent hover:border-gray-50 items-center gap-6">
-                                        <Link href={`/shop/${product.id}`} className="relative w-40 h-40 bg-gray-50 rounded-2xl flex-shrink-0 flex items-center justify-center p-5 overflow-hidden cursor-pointer">
+                                        <Link href={`/shop/${product.id}`} className="relative w-40 aspect-[4/5] bg-gray-50 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden cursor-pointer">
                                             <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-lg flex items-center justify-center text-[#cfcfcf]/50">
                                                 {product.images?.[0] ? (
-                                                    <Image src={product.images[0]} alt={product.name} fill className="object-contain" />
+                                                    <Image src={product.images[0]} alt={product.name} fill className="object-cover" />
                                                 ) : (
                                                     <UtensilsCrossed className="w-10 h-10" />
                                                 )}

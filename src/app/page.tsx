@@ -227,14 +227,14 @@ export default function Home() {
                 filteredProducts.map((product) => (
                   <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
                     {/* Image Container */}
-                    <Link href={`/shop/${product.id}`} className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8 cursor-pointer">
+                    <Link href={`/shop/${product.id}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center cursor-pointer">
                       <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
                         {product.images?.[0] ? (
                           <Image
                             src={product.images[0]}
                             alt={product.name}
                             fill
-                            className="object-contain"
+                            className="object-cover"
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center text-gray-200">
