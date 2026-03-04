@@ -23,6 +23,7 @@ import Footer from "@/components/Footer";
 import TopBanner from "@/components/headers/TopBanner";
 import { createClient } from "@/lib/supabase/client";
 import { Product } from "@/types/product";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function ProductDetails() {
     const { slug } = useParams();
@@ -226,13 +227,29 @@ export default function ProductDetails() {
                                         </button>
                                     </div>
 
-                                    <button className="flex-grow w-full bg-brand-orange text-white h-16 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-brand-orange/20 flex items-center justify-center gap-4 hover:bg-brand-teal transition-all transform hover:-translate-y-1">
+                                    <button
+                                        onClick={() => {
+                                            for (let i = 0; i < quantity; i++) {
+                                                useCartStore.getState().addItem(product);
+                                            }
+                                            // Optional: open cart drawer or show feedback
+                                        }}
+                                        className="flex-grow w-full bg-brand-orange text-white h-16 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-brand-orange/20 flex items-center justify-center gap-4 hover:bg-brand-teal transition-all transform hover:-translate-y-1"
+                                    >
                                         <ShoppingBag className="w-5 h-5 font-bold" />
                                         Add to Cart
                                     </button>
                                 </div>
 
-                                <button className="w-full bg-brand-teal text-white h-16 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-teal/10 flex items-center justify-center gap-4 hover:bg-brand-orange transition-all transform hover:-translate-y-1">
+                                <button
+                                    onClick={() => {
+                                        for (let i = 0; i < quantity; i++) {
+                                            useCartStore.getState().addItem(product);
+                                        }
+                                        router.push("/checkout");
+                                    }}
+                                    className="w-full bg-brand-teal text-white h-16 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-teal/10 flex items-center justify-center gap-4 hover:bg-brand-orange transition-all transform hover:-translate-y-1"
+                                >
                                     Checkout Now
                                 </button>
                             </div>

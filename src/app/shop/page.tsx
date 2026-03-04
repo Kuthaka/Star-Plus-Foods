@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/client";
 import { Product } from "@/types/product";
 import { Category } from "@/types/category";
+import { useCartStore } from "@/store/useCartStore";
 
 
 export default function Shop() {
@@ -237,7 +238,10 @@ export default function Shop() {
                                                     <span className="text-gray-400 text-[10px] font-bold uppercase mb-1">Price</span>
                                                     <span className="text-brand-teal font-black text-lg md:text-xl">₹{product.price}</span>
                                                 </div>
-                                                <button className="h-8 w-8 md:h-10 md:w-10 bg-brand-teal text-white rounded-lg md:rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
+                                                <button
+                                                    onClick={() => useCartStore.getState().addItem(product)}
+                                                    className="h-8 w-8 md:h-10 md:w-10 bg-brand-teal text-white rounded-lg md:rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10"
+                                                >
                                                     <Plus className="w-4 h-4 md:w-5 md:h-5 text-white" />
                                                 </button>
                                             </div>

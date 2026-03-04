@@ -12,14 +12,21 @@ import CartDrawer from "@/components/cart/CartDrawer";
  * Navbar component with a "Magnet Merge" scroll animation.
  * The Logo and Icons glide into the central pill to form a compact capsule.
  */
+import { useCartStore } from "@/store/useCartStore";
+
 export default function Navbar() {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [showBottomNav, setShowBottomNav] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [mounted, setMounted] = useState(false);
     const pathname = usePathname();
 
+    const cartItems = useCartStore((state) => state.items);
+    const totalItems = useCartStore((state) => state.getTotalItems());
+
     useEffect(() => {
+        setMounted(true);
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
             setIsScrolled(currentScrollY > 20);
@@ -121,7 +128,11 @@ export default function Navbar() {
                             <Search className="w-5 h-5 cursor-pointer hover:text-brand-orange" />
                             <div className="relative group cursor-pointer" onClick={() => setIsCartOpen(true)}>
                                 <ShoppingBag className="w-5 h-5 hover:text-brand-orange" />
-                                <span className="absolute -top-1 -right-1 bg-brand-orange text-white text-[8px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-black shadow-sm">0</span>
+                                {mounted && totalItems > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-brand-orange text-white text-[8px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-black shadow-sm pulse-orange">
+                                        {totalItems}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>
