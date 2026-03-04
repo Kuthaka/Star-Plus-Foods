@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Star Plus Foods: Recipes From the Master Chefs of Nameless Streets of India",
 };
 
+import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,6 +24,7 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} antialiased font-sans`}
       >
+        <AnalyticsTracker />
         {children}
       </body>
     </html>
