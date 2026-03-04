@@ -101,7 +101,7 @@ export default function ProductDetails() {
             <TopBanner />
             <Navbar />
 
-            <main className="flex-grow pt-8 pb-32">
+            <main className="flex-grow pt-24 pb-32">
                 <div className="container mx-auto px-4 md:px-12">
                     {/* Breadcrumbs & Navigation */}
                     <div className="flex items-center justify-between mb-12">
