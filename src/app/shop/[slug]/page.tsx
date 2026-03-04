@@ -25,7 +25,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Product } from "@/types/product";
 
 export default function ProductDetails() {
-    const { id } = useParams();
+    const { slug } = useParams();
     const router = useRouter();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
@@ -36,22 +36,29 @@ export default function ProductDetails() {
     const supabase = createClient();
 
     useEffect(() => {
-        if (id) {
+        if (slug) {
             fetchProductData();
         }
-    }, [id]);
+    }, [slug]);
 
     const fetchProductData = async () => {
         setLoading(true);
         try {
-            // 1. Fetch main product
+            // 1. Fetch main product by SLUG
+            console.log("Fetching for slug:", slug);
             const { data, error } = await supabase
                 .from("products")
                 .select("*")
-                .eq("id", id)
+                .eq("slug", slug)
                 .single();
 
-            if (error) throw error;
+            console.log("Supabase Data:", data);
+            console.log("Supabase Error:", error);
+
+            if (error) {
+                // If not found by slug, maybe try ID as fallback or just 404
+                throw error;
+            }
             setProduct(data);
 
             // 2. Fetch related products (same category)
@@ -59,7 +66,7 @@ export default function ProductDetails() {
                 .from("products")
                 .select("*")
                 .eq("category", data.category)
-                .neq("id", id)
+                .neq("id", data.id)
                 .limit(4);
 
             setRelatedProducts(related || []);
@@ -126,7 +133,7 @@ export default function ProductDetails() {
                                             alt={product.name}
                                             fill
                                             priority
-                                            className="object-contain p-12 transform group-hover:scale-110 transition-transform duration-1000"
+                                            className="object-cover transform group-hover:scale-110 transition-transform duration-1000"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-200">
@@ -150,7 +157,7 @@ export default function ProductDetails() {
                                                     ${activeImage === idx ? 'border-brand-orange bg-white shadow-xl shadow-brand-orange/10 scale-110' : 'border-transparent bg-gray-50 hover:bg-gray-100 opacity-60 hover:opacity-100'}
                                                 `}
                                             >
-                                                <Image src={img} alt="" fill className="object-contain p-1" />
+                                                <Image src={img} alt="" fill className="object-cover" />
                                             </button>
                                         ))}
                                     </div>
@@ -267,16 +274,16 @@ export default function ProductDetails() {
                                     <div
                                         key={p.id}
                                         onClick={() => {
-                                            router.push(`/shop/${p.id}`);
+                                            router.push(`/shop/${p.slug}`);
                                             setActiveImage(0);
                                         }}
                                         className="group cursor-pointer bg-white rounded-3xl p-4 border border-transparent hover:border-gray-50 hover:shadow-2xl transition-all duration-500"
                                     >
-                                        <div className="relative aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 p-8">
+                                        <div className="relative aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center">
                                             {p.images?.[0] ? (
-                                                <Image src={p.images[0]} alt={p.name} fill className="object-contain transform group-hover:scale-110 transition-transform duration-700" />
+                                                <Image src={p.images[0]} alt={p.name} fill className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
                                             ) : (
-                                                <UtensilsCrossed className="w-10 h-10 text-gray-200 m-auto mt-16" />
+                                                <UtensilsCrossed className="w-10 h-10 text-gray-200" />
                                             )}
                                         </div>
                                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{p.category}</span>

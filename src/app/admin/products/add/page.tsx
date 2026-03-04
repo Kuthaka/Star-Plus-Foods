@@ -22,6 +22,7 @@ import { Category } from "@/types/category";
 
 export default function AddProductPage() {
     const [name, setName] = useState("");
+    const [slug, setSlug] = useState("");
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("");
     const [size, setSize] = useState("");
@@ -64,6 +65,19 @@ export default function AddProductPage() {
         };
         fetchCats();
     }, []);
+
+    const generateSlug = (text: string) => {
+        return text
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove non-word chars
+            .replace(/[\s_]+/g, '-')  // Replace spaces/underscores with -
+            .replace(/^-+|-+$/g, ''); // Trim - from start/end
+    };
+
+    const handleNameChange = (val: string) => {
+        setName(val);
+        setSlug(generateSlug(val));
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const file = e.target.files?.[0];
@@ -126,7 +140,20 @@ export default function AddProductPage() {
         }
 
         try {
-            // 1. Upload Images to Cloudinary
+            // 1. Check if slug exists
+            const { data: existingProduct } = await supabase
+                .from("products")
+                .select("id")
+                .eq("slug", slug)
+                .single();
+
+            if (existingProduct) {
+                setError("A product with this URL slug already exists. Please change the name or slug.");
+                setIsSubmitting(false);
+                return;
+            }
+
+            // 2. Upload Images to Cloudinary
             const imageUrls: string[] = [];
             for (let i = 0; i < imageFiles.length; i++) {
                 const file = imageFiles[i];
@@ -137,9 +164,10 @@ export default function AddProductPage() {
                 }
             }
 
-            // 2. Insert Product to Supabase
+            // 3. Insert Product to Supabase
             const { error: insertError } = await supabase.from("products").insert({
                 name,
+                slug,
                 category: category || "Uncategorized", // Fallback
                 price: parseFloat(price),
                 size_grams: parseInt(size) || 0,
@@ -214,10 +242,26 @@ export default function AddProductPage() {
                                     type="text"
                                     required
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={(e) => handleNameChange(e.target.value)}
                                     placeholder="e.g. Star Plus Garam Masala"
                                     className="w-full h-16 bg-[#FEFCE8]/40 border-none rounded-[1.5rem] px-8 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none"
                                 />
+                            </div>
+
+                            {/* Slug */}
+                            <div className="space-y-3 group">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">URL Slug (Editable)</label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        required
+                                        value={slug}
+                                        onChange={(e) => setSlug(generateSlug(e.target.value))}
+                                        placeholder="star-plus-garam-masala"
+                                        className="w-full h-16 bg-gray-50/50 border-none rounded-[1.5rem] px-8 text-sm font-bold text-brand-teal/50 focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none"
+                                    />
+                                    <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[8px] font-black text-brand-teal/20 uppercase">Auto Generated</span>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

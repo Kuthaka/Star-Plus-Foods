@@ -43,6 +43,7 @@ export default function ProductDetailsPage() {
 
     // Edit Form State
     const [editName, setEditName] = useState("");
+    const [editSlug, setEditSlug] = useState("");
     const [editCategory, setEditCategory] = useState("");
     const [editPrice, setEditPrice] = useState("");
     const [editSize, setEditSize] = useState("");
@@ -94,6 +95,7 @@ export default function ProductDetailsPage() {
 
             // Sync edit state
             setEditName(data.name);
+            setEditSlug(data.slug || "");
             setEditCategory(data.category);
             setEditPrice(data.price.toString());
             setEditSize(data.size_grams.toString());
@@ -108,6 +110,19 @@ export default function ProductDetailsPage() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const generateSlug = (text: string) => {
+        return text
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove non-word chars
+            .replace(/[\s_]+/g, '-')  // Replace spaces/underscores with -
+            .replace(/^-+|-+$/g, ''); // Trim - from start/end
+    };
+
+    const handleNameChange = (val: string) => {
+        setEditName(val);
+        setEditSlug(generateSlug(val));
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -155,7 +170,21 @@ export default function ProductDetailsPage() {
         setError(null);
 
         try {
-            // 1. Upload new images to Cloudinary if any
+            // 1. Check if slug exists (excluding current product)
+            const { data: existingProduct } = await supabase
+                .from("products")
+                .select("id")
+                .eq("slug", editSlug)
+                .neq("id", id)
+                .single();
+
+            if (existingProduct) {
+                setError("A product with this URL slug already exists. Please change the name or slug.");
+                setIsUpdating(false);
+                return;
+            }
+
+            // 2. Upload new images to Cloudinary if any
             const finalImageUrls: string[] = [];
             for (let i = 0; i < 4; i++) {
                 if (editFiles[i]) {
@@ -169,11 +198,12 @@ export default function ProductDetailsPage() {
 
             const cleanImageUrls = finalImageUrls.filter(url => url !== undefined && url !== null);
 
-            // 2. Update Product
+            // 3. Update Product
             const { error: updateError } = await supabase
                 .from("products")
                 .update({
                     name: editName,
+                    slug: editSlug,
                     category: editCategory,
                     price: parseFloat(editPrice),
                     size_grams: parseInt(editSize),
@@ -304,8 +334,19 @@ export default function ProductDetailsPage() {
                                         type="text"
                                         required
                                         value={editName}
-                                        onChange={(e) => setEditName(e.target.value)}
+                                        onChange={(e) => handleNameChange(e.target.value)}
                                         className="w-full h-16 bg-[#FEFCE8]/40 border-none rounded-2xl px-8 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 outline-none"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">URL Slug (Editable)</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={editSlug}
+                                        onChange={(e) => setEditSlug(generateSlug(e.target.value))}
+                                        className="w-full h-16 bg-gray-50/50 border-none rounded-2xl px-8 text-sm font-bold text-brand-teal/50 focus:ring-4 focus:ring-brand-orange/10 outline-none"
                                     />
                                 </div>
 
