@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Timer, Heart, Plane, ShieldCheck, Loader2, UtensilsCrossed, Plus } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
@@ -226,7 +227,7 @@ export default function Home() {
                 filteredProducts.map((product) => (
                   <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
                     {/* Image Container */}
-                    <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
+                    <Link href={`/shop/${product.id}`} className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8 cursor-pointer">
                       <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
                         {product.images?.[0] ? (
                           <Image
@@ -242,16 +243,18 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Product Info */}
                     <div className="flex flex-col gap-1 px-2">
                       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">
                         {product.category}
                       </span>
-                      <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">
-                        {product.name}
-                      </h4>
+                      <Link href={`/shop/${product.id}`}>
+                        <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer">
+                          {product.name}
+                        </h4>
+                      </Link>
 
                       {/* Rating placeholder */}
                       <div className="flex items-center gap-1 my-2">

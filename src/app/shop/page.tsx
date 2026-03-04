@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List, ShoppingBag, UtensilsCrossed, Plus, Loader2 } from "lucide-react";
 import TopBanner from "@/components/headers/TopBanner";
 import Navbar from "@/components/headers/Navbar";
@@ -195,7 +196,7 @@ export default function Shop() {
                                 {filteredAndSortedProducts.map((product) => (
                                     <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
                                         {/* Image Container */}
-                                        <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8">
+                                        <Link href={`/shop/${product.id}`} className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center p-8 cursor-pointer">
                                             <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl font-bold uppercase tracking-widest text-[#cfcfcf]/50">
                                                 {product.images?.[0] ? (
                                                     <Image
@@ -209,16 +210,18 @@ export default function Shop() {
                                                 )}
                                             </div>
                                             <div className="absolute inset-0 bg-brand-teal/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-30">
-                                                <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-teal hover:bg-brand-orange hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 shadow-xl">
+                                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-teal hover:bg-brand-orange hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 shadow-xl">
                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                                                </button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
 
                                         {/* Info */}
                                         <div className="flex flex-col gap-1 px-2">
                                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">{product.category}</span>
-                                            <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                                            <Link href={`/shop/${product.id}`}>
+                                                <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer">{product.name}</h4>
+                                            </Link>
                                             <div className="flex items-center gap-1 my-2">
                                                 {[1, 2, 3, 4, 5].map((s) => (
                                                     <svg key={s} className={`w-3 h-3 ${s <= 4 ? "text-brand-yellow fill-current" : "text-gray-200 fill-current"}`} viewBox="0 0 20 20">
@@ -244,7 +247,7 @@ export default function Shop() {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 {filteredAndSortedProducts.map((product) => (
                                     <div key={product.id} className="group flex flex-col md:flex-row bg-white rounded-3xl p-5 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-transparent hover:border-gray-50 items-center gap-6">
-                                        <div className="relative w-40 h-40 bg-gray-50 rounded-2xl flex-shrink-0 flex items-center justify-center p-5 overflow-hidden">
+                                        <Link href={`/shop/${product.id}`} className="relative w-40 h-40 bg-gray-50 rounded-2xl flex-shrink-0 flex items-center justify-center p-5 overflow-hidden cursor-pointer">
                                             <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-lg flex items-center justify-center text-[#cfcfcf]/50">
                                                 {product.images?.[0] ? (
                                                     <Image src={product.images[0]} alt={product.name} fill className="object-contain" />
@@ -252,10 +255,12 @@ export default function Shop() {
                                                     <UtensilsCrossed className="w-10 h-10" />
                                                 )}
                                             </div>
-                                        </div>
+                                        </Link>
                                         <div className="flex-grow text-center md:text-left min-w-0">
                                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{product.category}</span>
-                                            <h4 className="text-brand-teal font-black text-xl uppercase mt-1 mb-2 group-hover:text-brand-orange transition-colors truncate">{product.name}</h4>
+                                            <Link href={`/shop/${product.id}`}>
+                                                <h4 className="text-brand-teal font-black text-xl uppercase mt-1 mb-2 group-hover:text-brand-orange transition-colors truncate cursor-pointer">{product.name}</h4>
+                                            </Link>
                                             <div className="flex items-center justify-center md:justify-start gap-1 mb-3">
                                                 {[1, 2, 3, 4, 5].map((s) => (
                                                     <svg key={s} className="w-3 h-3 text-brand-yellow fill-current" viewBox="0 0 20 20">
