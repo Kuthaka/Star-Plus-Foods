@@ -26,9 +26,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Product, CATEGORIES } from "@/types/product";
+import { Product } from "@/types/product";
 import ImageCropper from "@/components/admin/products/ImageCropper";
 import { uploadToCloudinary } from "@/services/cloudinaryService";
+import { Category } from "@/types/category";
 
 export default function ProductDetailsPage() {
     const { id } = useParams();
@@ -47,6 +48,8 @@ export default function ProductDetailsPage() {
     const [editSize, setEditSize] = useState("");
     const [editImages, setEditImages] = useState<(string | null)[]>([null, null, null, null]);
     const [editFiles, setEditFiles] = useState<(Blob | null)[]>([null, null, null, null]);
+    const [dbCategories, setDbCategories] = useState<Category[]>([]);
+    const [fetchingCats, setFetchingCats] = useState(true);
 
     // Cropper State
     const [showCropper, setShowCropper] = useState(false);
@@ -59,7 +62,23 @@ export default function ProductDetailsPage() {
 
     useEffect(() => {
         fetchProduct();
+        fetchCategories();
     }, [id]);
+
+    const fetchCategories = async () => {
+        try {
+            const { data } = await supabase
+                .from("categories")
+                .select("*")
+                .eq("is_listed", true)
+                .order("name", { ascending: true });
+            if (data) setDbCategories(data);
+        } catch (err) {
+            console.error("Error fetching categories:", err);
+        } finally {
+            setFetchingCats(false);
+        }
+    };
 
     const fetchProduct = async () => {
         setLoading(true);
@@ -294,11 +313,16 @@ export default function ProductDetailsPage() {
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Category Mapping</label>
                                         <select
+                                            disabled={fetchingCats}
                                             value={editCategory}
                                             onChange={(e) => setEditCategory(e.target.value)}
-                                            className="w-full h-16 bg-gray-50/50 border-none rounded-2xl px-8 text-sm font-bold text-brand-teal outline-none"
+                                            className="w-full h-16 bg-gray-50/50 border-none rounded-2xl px-8 text-sm font-bold text-brand-teal outline-none disabled:opacity-50"
                                         >
-                                            {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                                            {dbCategories.length > 0 ? (
+                                                dbCategories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)
+                                            ) : (
+                                                <option value="">{editCategory || "No Categories"}</option>
+                                            )}
                                         </select>
                                     </div>
                                     <div className="space-y-2">

@@ -13,17 +13,14 @@ import {
     LogOut,
     UtensilsCrossed,
     PieChart,
-    X
+    X,
+    Tag
 } from "lucide-react";
 
 const MENU_ITEMS = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+    { name: "Categories", icon: Tag, path: "/admin/categories" },
     { name: "Products", icon: UtensilsCrossed, path: "/admin/products" },
-    { name: "Orders", icon: ShoppingBag, path: "/admin/orders" },
-    { name: "Customers", icon: Users, path: "/admin/customers" },
-    { name: "Analytics", icon: PieChart, path: "/admin/analytics" },
-    { name: "Marketing", icon: BarChart3, path: "/admin/marketing" },
-    { name: "Notifications", icon: Bell, path: "/admin/notifications" },
     { name: "Settings", icon: Settings, path: "/admin/settings" },
 ];
 

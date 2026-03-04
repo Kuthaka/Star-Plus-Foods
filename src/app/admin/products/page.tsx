@@ -19,7 +19,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import { Product, CATEGORIES } from "@/types/product";
+import { Product } from "@/types/product";
+import { Category } from "@/types/category";
 
 export default function AdminProductsPage() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -30,11 +31,19 @@ export default function AdminProductsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 8;
 
+    const [dbCategories, setDbCategories] = useState<Category[]>([]);
+
     const supabase = createClient();
 
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
+
+    const fetchCategories = async () => {
+        const { data } = await supabase.from("categories").select("*").order("name", { ascending: true });
+        if (data) setDbCategories(data);
+    };
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -116,8 +125,8 @@ export default function AdminProductsPage() {
                             className="h-12 pl-12 pr-10 bg-gray-50/50 border-none rounded-xl text-[10px] font-black uppercase tracking-widest text-brand-teal focus:ring-4 focus:ring-brand-orange/5 transition-all outline-none appearance-none cursor-pointer"
                         >
                             <option value="All">All Categories</option>
-                            {CATEGORIES.map(cat => (
-                                <option key={cat} value={cat}>{cat}</option>
+                            {dbCategories.map(cat => (
+                                <option key={cat.id} value={cat.name}>{cat.name}</option>
                             ))}
                         </select>
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />

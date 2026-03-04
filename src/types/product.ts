@@ -10,6 +10,4 @@ export type Product = {
     updated_at: string;
 };
 
-export type Category = "Curries" | "Rice" | "Sides" | "Combos" | "Drinks" | "Powders" | "Masalas";
 
-export const CATEGORIES: Category[] = ["Curries", "Rice", "Sides", "Combos", "Drinks", "Powders", "Masalas"];

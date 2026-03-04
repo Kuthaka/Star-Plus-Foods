@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     ArrowLeft,
     Upload,
@@ -16,19 +16,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { CATEGORIES } from "@/types/product";
 import ImageCropper from "@/components/admin/products/ImageCropper";
 import { uploadToCloudinary } from "@/services/cloudinaryService";
+import { Category } from "@/types/category";
 
 export default function AddProductPage() {
     const [name, setName] = useState("");
-    const [category, setCategory] = useState(CATEGORIES[0]);
+    const [category, setCategory] = useState("");
     const [price, setPrice] = useState("");
     const [size, setSize] = useState("");
     const [images, setImages] = useState<(string | null)[]>([null, null, null, null]);
     const [imageFiles, setImageFiles] = useState<(Blob | null)[]>([null, null, null, null]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const [dbCategories, setDbCategories] = useState<Category[]>([]);
+    const [fetchingCats, setFetchingCats] = useState(true);
 
     // Cropper State
     const [showCropper, setShowCropper] = useState(false);
@@ -38,6 +41,29 @@ export default function AddProductPage() {
     const router = useRouter();
     const supabase = createClient();
     const fileInputRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
+
+    useEffect(() => {
+        const fetchCats = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("categories")
+                    .select("*")
+                    .eq("is_listed", true)
+                    .order("name", { ascending: true });
+
+                if (error) throw error;
+                if (data) {
+                    setDbCategories(data);
+                    if (data.length > 0) setCategory(data[0].name);
+                }
+            } catch (err) {
+                console.error("Error fetching categories:", err);
+            } finally {
+                setFetchingCats(false);
+            }
+        };
+        fetchCats();
+    }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const file = e.target.files?.[0];
@@ -114,7 +140,7 @@ export default function AddProductPage() {
             // 2. Insert Product to Supabase
             const { error: insertError } = await supabase.from("products").insert({
                 name,
-                category,
+                category: category || "Uncategorized", // Fallback
                 price: parseFloat(price),
                 size_grams: parseInt(size) || 0,
                 images: imageUrls,
@@ -200,13 +226,18 @@ export default function AddProductPage() {
                                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Category <span className="text-brand-orange">*</span></label>
                                     <div className="relative group">
                                         <select
+                                            disabled={fetchingCats}
                                             value={category}
-                                            onChange={(e) => setCategory(e.target.value as any)}
-                                            className="w-full h-16 bg-gray-50/50 border-none rounded-[1.5rem] px-8 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none appearance-none cursor-pointer"
+                                            onChange={(e) => setCategory(e.target.value)}
+                                            className="w-full h-16 bg-gray-50/50 border-none rounded-[1.5rem] px-8 text-sm font-bold text-brand-teal focus:ring-4 focus:ring-brand-orange/10 transition-all outline-none appearance-none cursor-pointer disabled:opacity-50"
                                         >
-                                            {CATEGORIES.map(cat => (
-                                                <option key={cat} value={cat}>{cat}</option>
-                                            ))}
+                                            {dbCategories.length > 0 ? (
+                                                dbCategories.map(cat => (
+                                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                                                ))
+                                            ) : (
+                                                <option value="">No Categories Available</option>
+                                            )}
                                         </select>
                                         <ArrowLeft className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 -rotate-90 pointer-events-none" />
                                     </div>
