@@ -157,7 +157,7 @@ export default function Footer() {
             {/* Copyright Section */}
             <div className="bg-[#4a140b] py-4 text-center border-t border-white/5">
                 <p className="text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase text-white/30">
-                    &copy; 2024 STAR PLUS FOODS. ALL RIGHTS RESERVED.
+                    &copy; 2026 STAR PLUS FOODS. ALL RIGHTS RESERVED.
                 </p>
             </div>
         </footer>

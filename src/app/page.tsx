@@ -143,42 +143,42 @@ export default function Home() {
         <section className="relative overflow-hidden">
           {/* Section Header */}
           <div className="bg-brand-teal text-white py-10 text-center">
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Chef's Special</h2>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Star Plus Foods Specials</h2>
           </div>
 
           {/* Special Dishes Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 w-full">
             {/* Item 1: Spicy Dhaba Chicken */}
-            <div className="bg-[#1e3b3e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+            <Link href="/shop" className="bg-[#1e3b3e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
               <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                 <Image src="/star/chef-1.png" alt="Spicy Dhaba Chicken" fill className="object-contain" />
               </div>
               <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Baking Powder</h3>
-            </div>
+            </Link>
 
             {/* Item 2: Jhannat Dal Fry */}
-            <div className="bg-[#ff6138] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+            <Link href="/shop" className="bg-[#ff6138] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
               <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                 <Image src="/star/chef-2.png" alt="Jhannat Dal Fry" fill className="object-contain" />
               </div>
               <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Garam Masala</h3>
-            </div>
+            </Link>
 
             {/* Item 3: Smoky Butter Chicken */}
-            <div className="bg-[#ffb400] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+            <Link href="/shop" className="bg-[#ffb400] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
               <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                 <Image src="/star/chef-3.png" alt="Smoky Butter Chicken" fill className="object-contain" />
               </div>
               <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Majboos Masala</h3>
-            </div>
+            </Link>
 
             {/* Item 4: Shahi Dal Makhni */}
-            <div className="bg-[#ac5e2e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+            <Link href="/shop" className="bg-[#ac5e2e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
               <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                 <Image src="/star/chef-4.png" alt="Shahi Dal Makhni" fill className="object-contain" />
               </div>
               <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Tandoori Chicken</h3>
-            </div>
+            </Link>
           </div>
         </section>
 
@@ -288,10 +288,10 @@ export default function Home() {
 
             {/* Load More Button */}
             <div className="mt-20 text-center">
-              <button className="group relative px-12 py-5 bg-brand-teal text-white font-black rounded-full overflow-hidden transition-all hover:pr-16">
+              <Link href="/shop" className="group relative inline-flex items-center px-12 py-5 bg-brand-teal text-white font-black rounded-full overflow-hidden transition-all hover:pr-16">
                 <span className="relative z-10 tracking-[0.2em] text-xs uppercase">View All Menu</span>
                 <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-xl">→</span>
-              </button>
+              </Link>
             </div>
           </div>
         </section>
