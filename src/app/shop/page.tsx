@@ -192,11 +192,11 @@ export default function Shop() {
                     {/* Product Listing */}
                     {!loading && (
                         viewMode === "grid" ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
                                 {filteredAndSortedProducts.map((product) => (
-                                    <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
+                                    <div key={product.id} className="group flex flex-col bg-white rounded-2xl md:rounded-3xl p-2 md:p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-gray-50 md:border-transparent hover:border-gray-50 relative">
                                         {/* Image Container */}
-                                        <Link href={`/shop/${product.slug}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center cursor-pointer">
+                                        <Link href={`/shop/${product.slug}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-xl md:rounded-2xl overflow-hidden mb-3 md:mb-6 flex items-center justify-center cursor-pointer">
                                             <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl font-bold uppercase tracking-widest text-[#cfcfcf]/50">
                                                 {product.images?.[0] ? (
                                                     <Image
@@ -220,7 +220,9 @@ export default function Shop() {
                                         <div className="flex flex-col gap-1 px-2">
                                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em]">{product.category}</span>
                                             <Link href={`/shop/${product.slug}`}>
-                                                <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer">{product.name}</h4>
+                                                <h4 className="text-brand-teal font-black text-xs md:text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer line-clamp-2 min-h-[2.5rem] md:min-h-0">
+                                                    {product.name}
+                                                </h4>
                                             </Link>
                                             <div className="flex items-center gap-1 my-2">
                                                 {[1, 2, 3, 4, 5].map((s) => (
@@ -233,10 +235,10 @@ export default function Shop() {
                                             <div className="flex items-center justify-between mt-2">
                                                 <div className="flex flex-col">
                                                     <span className="text-gray-400 text-[10px] font-bold uppercase mb-1">Price</span>
-                                                    <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                                                    <span className="text-brand-teal font-black text-lg md:text-xl">₹{product.price}</span>
                                                 </div>
-                                                <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
-                                                    <Plus className="w-5 h-5 text-white" />
+                                                <button className="h-8 w-8 md:h-10 md:w-10 bg-brand-teal text-white rounded-lg md:rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
+                                                    <Plus className="w-4 h-4 md:w-5 md:h-5 text-white" />
                                                 </button>
                                             </div>
                                         </div>

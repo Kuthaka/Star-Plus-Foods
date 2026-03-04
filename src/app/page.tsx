@@ -105,36 +105,36 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="bg-brand-teal py-16 text-white overflow-hidden">
-          <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 lg:px-20">
+        <section className="bg-brand-teal py-8 md:py-16 text-white overflow-hidden border-t border-white/5">
+          <div className="container mx-auto px-2 md:px-12 flex flex-row justify-around items-center gap-2 md:gap-4 lg:px-20">
             {/* Feature 1 */}
-            <div className="flex flex-col items-center gap-4 text-center">
-              <Timer className="w-10 h-10 text-brand-yellow" />
-              <h3 className="text-brand-yellow font-bold tracking-widest text-sm md:text-base uppercase">Ready in 2 Mins</h3>
+            <div className="flex flex-col items-center gap-2 md:gap-4 text-center px-1">
+              <Timer className="w-6 h-6 md:w-10 md:h-10 text-brand-yellow" />
+              <h3 className="text-brand-yellow font-black tracking-widest text-[7px] md:text-xs lg:text-sm uppercase leading-tight">Ready in<br />2 Mins</h3>
             </div>
 
-            <div className="hidden md:block w-32 h-[1px] border-t border-dashed border-white/20"></div>
+            <div className="hidden sm:block flex-grow h-[1px] border-t border-dashed border-white/20 max-w-[60px]"></div>
 
             {/* Feature 2 */}
-            <div className="flex flex-col items-center gap-4 text-center">
-              <Heart className="w-10 h-10 text-brand-yellow" />
-              <h3 className="text-brand-yellow font-bold tracking-widest text-sm md:text-base uppercase">Flavors from Streets</h3>
+            <div className="flex flex-col items-center gap-2 md:gap-4 text-center px-1">
+              <Heart className="w-6 h-6 md:w-10 md:h-10 text-brand-yellow" />
+              <h3 className="text-brand-yellow font-black tracking-widest text-[7px] md:text-xs lg:text-sm uppercase leading-tight">Flavors from<br />Streets</h3>
             </div>
 
-            <div className="hidden md:block w-32 h-[1px] border-t border-dashed border-white/20"></div>
+            <div className="hidden sm:block flex-grow h-[1px] border-t border-dashed border-white/20 max-w-[60px]"></div>
 
             {/* Feature 3 */}
-            <div className="flex flex-col items-center gap-4 text-center">
-              <Plane className="w-10 h-10 text-brand-yellow" />
-              <h3 className="text-brand-yellow font-bold tracking-widest text-sm md:text-base uppercase">Travel Partner</h3>
+            <div className="flex flex-col items-center gap-2 md:gap-4 text-center px-1">
+              <Plane className="w-6 h-6 md:w-10 md:h-10 text-brand-yellow" />
+              <h3 className="text-brand-yellow font-black tracking-widest text-[7px] md:text-xs lg:text-sm uppercase leading-tight">Travel<br />Partner</h3>
             </div>
 
-            <div className="hidden md:block w-32 h-[1px] border-t border-dashed border-white/20"></div>
+            <div className="hidden sm:block flex-grow h-[1px] border-t border-dashed border-white/20 max-w-[60px]"></div>
 
             {/* Feature 4 */}
-            <div className="flex flex-col items-center gap-4 text-center">
-              <ShieldCheck className="w-10 h-10 text-brand-yellow" />
-              <h3 className="text-brand-yellow font-bold tracking-widest text-sm md:text-base uppercase">Hygienic Packaging</h3>
+            <div className="flex flex-col items-center gap-2 md:gap-4 text-center px-1">
+              <ShieldCheck className="w-6 h-6 md:w-10 md:h-10 text-brand-yellow" />
+              <h3 className="text-brand-yellow font-black tracking-widest text-[7px] md:text-xs lg:text-sm uppercase leading-tight">Hygienic<br />Packaging</h3>
             </div>
           </div>
         </section>
@@ -147,37 +147,37 @@ export default function Home() {
           </div>
 
           {/* Special Dishes Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-4 w-full">
             {/* Item 1: Spicy Dhaba Chicken */}
-            <div className="bg-[#1e3b3e] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
-              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Spicy Dhaba Chicken" fill className="object-contain" />
+            <div className="bg-[#1e3b3e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="/star/chef-1.png" alt="Spicy Dhaba Chicken" fill className="object-contain" />
               </div>
-              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Spicy Dhaba Chicken</h3>
+              <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Baking Powder</h3>
             </div>
 
             {/* Item 2: Jhannat Dal Fry */}
-            <div className="bg-[#ff6138] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
-              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Jhannat Dal Fry" fill className="object-contain" />
+            <div className="bg-[#ff6138] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="/star/chef-2.png" alt="Jhannat Dal Fry" fill className="object-contain" />
               </div>
-              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Jhannat Dal Fry</h3>
+              <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Garam Masala</h3>
             </div>
 
             {/* Item 3: Smoky Butter Chicken */}
-            <div className="bg-[#ffb400] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
-              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Smoky Butter Chicken" fill className="object-contain" />
+            <div className="bg-[#ffb400] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="/star/chef-3.png" alt="Smoky Butter Chicken" fill className="object-contain" />
               </div>
-              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Smoky Butter Chicken</h3>
+              <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Majboos Masala</h3>
             </div>
 
             {/* Item 4: Shahi Dal Makhni */}
-            <div className="bg-[#ac5e2e] h-[400px] flex flex-col items-center justify-center p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
-              <div className="relative w-56 h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                <Image src="https://res.cloudinary.com/drmroxs00/image/upload/v1772532862/1-removebg_w2b9ls.png" alt="Shahi Dal Makhni" fill className="object-contain" />
+            <div className="bg-[#ac5e2e] h-[300px] md:h-[400px] flex flex-col items-center justify-center p-4 md:p-8 mandala-pattern group cursor-pointer overflow-hidden relative">
+              <div className="relative w-32 h-32 md:w-56 md:h-56 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                <Image src="/star/chef-4.png" alt="Shahi Dal Makhni" fill className="object-contain" />
               </div>
-              <h3 className="text-white font-black text-xl tracking-wider uppercase mt-8 text-center">Shahi Dal Makhni</h3>
+              <h3 className="text-white font-black text-sm md:text-xl tracking-wider uppercase mt-6 md:mt-8 text-center px-2">Tandoori Chicken</h3>
             </div>
           </div>
         </section>
@@ -213,7 +213,7 @@ export default function Home() {
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-y-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 md:gap-y-12">
               {loading ? (
                 /* Skeleton Loading State */
                 [...Array(4)].map((_, i) => (
@@ -225,9 +225,9 @@ export default function Home() {
                 ))
               ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
-                  <div key={product.id} className="group flex flex-col bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-transparent hover:border-gray-50 relative">
+                  <div key={product.id} className="group flex flex-col bg-white rounded-2xl md:rounded-3xl p-2 md:p-4 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-gray-50 md:border-transparent hover:border-gray-50 relative">
                     {/* Image Container */}
-                    <Link href={`/shop/${product.slug}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-2xl overflow-hidden mb-6 flex items-center justify-center cursor-pointer">
+                    <Link href={`/shop/${product.slug}`} className="relative w-full aspect-[4/5] bg-gray-50 rounded-xl md:rounded-2xl overflow-hidden mb-3 md:mb-6 flex items-center justify-center cursor-pointer">
                       <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 drop-shadow-xl">
                         {product.images?.[0] ? (
                           <Image
@@ -251,7 +251,7 @@ export default function Home() {
                         {product.category}
                       </span>
                       <Link href={`/shop/${product.slug}`}>
-                        <h4 className="text-brand-teal font-black text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer">
+                        <h4 className="text-brand-teal font-black text-sm md:text-lg uppercase leading-tight group-hover:text-brand-orange transition-colors cursor-pointer line-clamp-2 min-h-[2.5rem] md:min-h-0">
                           {product.name}
                         </h4>
                       </Link>
@@ -269,10 +269,10 @@ export default function Home() {
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex flex-col">
                           <span className="text-gray-400 text-[10px] font-bold uppercase leading-none mb-1">Price</span>
-                          <span className="text-brand-teal font-black text-xl">₹{product.price}</span>
+                          <span className="text-brand-teal font-black text-lg md:text-xl">₹{product.price}</span>
                         </div>
-                        <button className="h-10 w-10 bg-brand-teal text-white rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
-                          <Plus className="w-5 h-5 text-white" />
+                        <button className="h-8 w-8 md:h-10 md:w-10 bg-brand-teal text-white rounded-lg md:rounded-xl flex items-center justify-center hover:bg-brand-orange transition-all hover:scale-110 shadow-lg shadow-brand-teal/10">
+                          <Plus className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </button>
                       </div>
                     </div>
