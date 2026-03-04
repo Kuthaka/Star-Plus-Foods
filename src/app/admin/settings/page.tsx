@@ -226,8 +226,15 @@ export default function AdminSettingsPage() {
                             <div className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2 group">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2 group/tip relative">
                                             <MessageCircle className="w-3 h-3 text-green-500" /> WhatsApp Direct
+                                            <div className="relative group/icon">
+                                                <Info className="w-3 h-3 text-gray-300 cursor-help hover:text-brand-orange transition-colors" />
+                                                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-3 bg-brand-teal text-white text-[8px] font-bold uppercase tracking-widest rounded-xl opacity-0 invisible group-hover/icon:opacity-100 group-hover/icon:visible transition-all z-50 shadow-xl leading-relaxed">
+                                                    This is the whatsapp number used for product ordering enquiries and checkouts.
+                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-brand-teal"></div>
+                                                </div>
+                                            </div>
                                         </label>
                                         <input
                                             type="text"

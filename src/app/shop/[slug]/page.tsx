@@ -16,7 +16,8 @@ import {
     ShieldCheck,
     Truck,
     UtensilsCrossed,
-    Loader2
+    Loader2,
+    MessageCircle
 } from "lucide-react";
 import Navbar from "@/components/headers/Navbar";
 import Footer from "@/components/Footer";
@@ -242,15 +243,16 @@ export default function ProductDetails() {
                                 </div>
 
                                 <button
-                                    onClick={() => {
-                                        for (let i = 0; i < quantity; i++) {
-                                            useCartStore.getState().addItem(product);
-                                        }
-                                        router.push("/checkout");
+                                    onClick={async () => {
+                                        const message = `Hello Star Plus Foods! 👋\n\nI'm interested in ordering:\n📦 *${product.name}*\n🔢 Quantity: ${quantity}\n💰 Price: ₹${product.price * quantity}\n🔗 Product Link: ${window.location.origin}/shop/${product.slug}\n\nPlease let me know how to proceed with the payment. Thank you!`;
+
+                                        const { handleWhatsAppCheckout } = await import("@/lib/whatsapp");
+                                        handleWhatsAppCheckout(message);
                                     }}
                                     className="w-full bg-brand-teal text-white h-16 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-brand-teal/10 flex items-center justify-center gap-4 hover:bg-brand-orange transition-all transform hover:-translate-y-1"
                                 >
-                                    Checkout Now
+                                    <MessageCircle className="w-5 h-5 text-white" />
+                                    Checkout via WhatsApp
                                 </button>
                             </div>
 

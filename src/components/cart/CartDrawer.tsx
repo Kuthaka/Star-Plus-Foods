@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { X, ShoppingBag, ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
+import { X, ShoppingBag, ArrowRight, Minus, Plus, Trash2, MessageCircle } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import Image from "next/image";
 import Link from "next/link";
@@ -161,17 +161,30 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             <span className="text-gray-400 text-[10px]">Taxes calculated at checkout</span>
                         </div>
                     </div>
-                    <Link
-                        href="/checkout"
-                        onClick={onClose}
+                    <button
+                        onClick={async () => {
+                            if (items.length === 0) return;
+
+                            let message = "Hello Star Plus Foods! 👋\n\nI'd like to place an order for the following items:\n\n";
+
+                            items.forEach((item, index) => {
+                                message += `${index + 1}. *${item.name}*\n   🔢 Qty: ${item.quantity}\n   💰 Price: ₹${item.price * item.quantity}\n   🔗 Link: ${window.location.origin}/shop/${item.slug}\n\n`;
+                            });
+
+                            message += `--------------------------\n🛍️ *Total Items:* ${totalItems}\n💳 *Total Amount:* ₹${totalPrice}\n\nPlease let me know how to proceed. Thank you!`;
+
+                            const { handleWhatsAppCheckout } = await import("@/lib/whatsapp");
+                            handleWhatsAppCheckout(message);
+                        }}
+                        disabled={items.length === 0}
                         className={`w-full py-5 flex items-center justify-center gap-3 font-black rounded-2xl uppercase tracking-[0.2em] text-xs transition-all ${items.length > 0
-                                ? "bg-brand-orange text-white shadow-xl shadow-brand-orange/20 hover:-translate-y-1"
-                                : "bg-brand-teal/10 text-brand-teal/40 cursor-not-allowed"
+                            ? "bg-brand-orange text-white shadow-xl shadow-brand-orange/20 hover:-translate-y-1 hover:bg-brand-teal"
+                            : "bg-brand-teal/10 text-brand-teal/40 cursor-not-allowed"
                             }`}
                     >
-                        Checkout Securely
-                        <ArrowRight className="w-4 h-4" />
-                    </Link>
+                        Checkout via WhatsApp
+                        <MessageCircle className="w-4 h-4" />
+                    </button>
                 </div>
             </div>
         </>
