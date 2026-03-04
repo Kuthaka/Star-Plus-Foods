@@ -135,7 +135,7 @@ export default function Navbar() {
                     ${showBottomNav ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0"}
                 `}
             >
-                <div className="bg-white/90 backdrop-blur-2xl border border-gray-100 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-2">
+                <div className="bg-white/70 backdrop-blur-lg border border-brand-orange/20 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.1)] p-2">
                     <div className="flex items-center justify-around gap-1">
                         {[
                             { name: "Home", path: "/" },
