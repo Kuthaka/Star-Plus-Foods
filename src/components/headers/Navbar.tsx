@@ -63,10 +63,10 @@ export default function Navbar() {
                             : "opacity-0 w-0 h-0 shadow-none"}
                     `} />
 
-                    {/* Mobile Top Pill Backdrop - tighter length */}
+                    {/* Mobile Top Pill Backdrop - improved spacing */}
                     <div className={`
-                        absolute inset-x-8 h-16 bg-white/95 backdrop-blur-2xl border border-gray-200/50 rounded-full shadow-lg md:hidden transition-all duration-500
-                        ${isScrolled ? "opacity-100 translate-y-0 scale-95" : "opacity-0 -translate-y-4 pointer-events-none scale-90"}
+                        absolute inset-x-6 h-14 bg-white/95 backdrop-blur-2xl border border-gray-200/50 rounded-full shadow-lg md:hidden transition-all duration-500
+                        ${isScrolled ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-4 pointer-events-none scale-95"}
                     `} />
 
                     {/* Logo Section */}
@@ -75,7 +75,7 @@ export default function Navbar() {
                         className={`
                             absolute transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] z-20
                             ${isScrolled
-                                ? "left-1/2 -translate-x-[42vw] md:-translate-x-[220px] lg:-translate-x-[320px] w-10 h-10"
+                                ? "left-1/2 -translate-x-[38vw] md:-translate-x-[220px] lg:-translate-x-[320px] w-8 h-8 md:w-10 md:h-10"
                                 : "left-4 md:left-12 translate-x-0 w-16 h-16 md:w-24 md:h-24"}
                         `}
                     >
@@ -114,10 +114,10 @@ export default function Navbar() {
                     <div className={`
                         absolute transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] z-20
                         ${isScrolled
-                            ? "right-1/2 translate-x-[42vw] md:translate-x-[220px] lg:translate-x-[320px] scale-90 text-brand-teal"
+                            ? "right-1/2 translate-x-[38vw] md:translate-x-[220px] lg:translate-x-[320px] scale-90 text-brand-teal"
                             : `right-4 md:right-12 translate-x-0 scale-100 ${(pathname === "/shop" || pathname.startsWith("/about") || pathname.startsWith("/contact") || pathname.startsWith("/blogs")) ? "text-white md:text-white" : "text-brand-teal"}`}
                     `}>
-                        <div className="flex items-center gap-6 md:gap-8">
+                        <div className="flex items-center gap-5 md:gap-8">
                             <Search className="w-5 h-5 cursor-pointer hover:text-brand-orange" />
                             <div className="relative group cursor-pointer" onClick={() => setIsCartOpen(true)}>
                                 <ShoppingBag className="w-5 h-5 hover:text-brand-orange" />
